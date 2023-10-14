@@ -13,23 +13,36 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     ListView listView;
-    String[] heroes = {"Superman", "Iron Man", "Batman", "Spider Man", "Flash"};
+//    String[] heroes = {"Superman", "Iron Man", "Batman", "Spider Man", "Flash"};
+    List<Contact> contacts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = findViewById(R.id.listView);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,heroes);
-        listView.setAdapter(adapter);
+        contacts = new ArrayList<>();
+        contacts.add(new Contact(R.drawable.baseline_phone_24, "Superman", "Hello Batman"));
+        contacts.add(new Contact(R.drawable.baseline_phone_24, "Iron Man", "Hello Batman"));
+        contacts.add(new Contact(R.drawable.baseline_phone_24, "Spider Man", "Hello Batman"));
+        contacts.add(new Contact(R.drawable.baseline_phone_24, "Flash", "Hello Batman"));
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this, "You selected: " + heroes[i], Toast.LENGTH_SHORT).show();
-            }
-        });
+        CustomAdapter myCustomAdapter = new CustomAdapter(this, contacts);
+        listView.setAdapter(myCustomAdapter);
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,heroes);
+//        listView.setAdapter(adapter);
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Toast.makeText(MainActivity.this, "You selected: " + heroes[i], Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 }
