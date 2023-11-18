@@ -2,6 +2,7 @@ package com.example.androidplayground;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,22 +15,61 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    ListView listView;
-    String[] heroes = {"Superman", "Iron Man", "Batman", "Spider Man", "Flash"};
+    EditText firstName, lastName, remarks;
+    Button insertBtn, displayBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listView = findViewById(R.id.listView);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,heroes);
-        listView.setAdapter(adapter);
+        firstName = findViewById(R.id.firstname);
+        lastName = findViewById(R.id.lastname);
+        remarks = findViewById(R.id.remarks);
+        insertBtn = findViewById(R.id.insert_btn);
+        displayBtn = findViewById(R.id.display_btn);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+
+        insertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this, "You selected: " + heroes[i], Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                String first_name = firstName.getText().toString();
+                String last_name = lastName.getText().toString();
+                String _remarks = remarks.getText().toString();
+                Boolean isInserted = databaseHelper.insertData(first_name,last_name,_remarks);
+                if(isInserted) {
+                    Toast.makeText(MainActivity.this, "Student record inserted successfully", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Failed to insert record", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+        displayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor result = databaseHelper.getAllData();
+
+                if(result != null && result.getCount() > 0) {
+                    while(result.moveToNext()) {
+                        StringBuffer stringBuffer = new StringBuffer();
+//                        result.getString(0); // id
+//                        result.getString(1); // firstname
+//                        result.getString(2); // lastname
+//                        result.getString(3); // remarks
+                        stringBuffer.append("ID: " + result.getString(0)+"\n");
+                        stringBuffer.append("First Name: " + result.getString(1)+"\n");
+                        stringBuffer.append("Last Name: " + result.getString(2)+"\n");
+                        stringBuffer.append("Remarks: " + result.getString(3)+"\n");
+                        Toast.makeText(MainActivity.this, stringBuffer.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "No record to display", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }

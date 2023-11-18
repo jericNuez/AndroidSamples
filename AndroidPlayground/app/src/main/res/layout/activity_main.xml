@@ -6,11 +6,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/listView"
+   <EditText
+       android:id="@+id/firstname"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:hint="enter firstname"/>
+
+    <EditText
+        android:id="@+id/lastname"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:hint="enter lastname"/>
+
+    <EditText
+        android:id="@+id/remarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="enter remarks"/>
+
+    <Button
+        android:id="@+id/insert_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Insert" />
+
+    <Button
+        android:id="@+id/display_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Display Records" />
 
 </LinearLayout>
